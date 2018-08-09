@@ -3,7 +3,11 @@ title: Data Management Plan for the Study 'Do Reputable Open Access Journals Req
   Open Data Sharing'?
 author: "Marko Vidak, ELIXIR-SI"
 date: "`r format(Sys.Date(), '%A, %B %d, %Y')`"
-output: slidy_presentation
+output:
+    html_document:
+     toc: true
+     toc_float: true
+     section_numbering: true  
 ---
 
 *****
@@ -13,7 +17,6 @@ output: slidy_presentation
 # Load packages used in this exercise
 library(tidyverse)
 library(rmarkdown)
-library(DT)
 ```
 
 ```{r global_options, include=FALSE}
@@ -32,11 +35,11 @@ doaj_seal <- read_csv("data/DOAJ_Seal.csv")
 
 ## ID
 
-Not Applicable
+__Not Applicable__
 
 ## Funder
 
-This research is being submitted for funding to the J. Bohannon Foundation http://www.johnbohannon.org/.
+This research is being submitted for funding to the [J. Bohannon Foundation](http://www.johnbohannon.org/).
 
 ## Grant Reference Number
 
@@ -61,6 +64,8 @@ Our investigation builds on the recent work of Castro et al (2017) who assessed 
 In this study, we will include only the most reputable open access journals in our assessment  of journal sharing policies, regardless of language. We will analyze all journals that have attained the Seal of Approval from the Directory of Open Access Journals, DOAJ http://doaj.org (shown below). We will apply the same coding framework devised by Castro et al (2017) to the DOAJ Seal journals. We contend that a more rigorously screened population of open access journals, regardless of language, will yield a more accurate and reproducible set of findings than those published from Castro et al (2017)
 
 ||> Insert DOAJ Seal of Approval images/doaj_seal_logo.png <||
+
+![DOAJ Seal of Approval](images/doaj_seal_logo.png)
 
 DOAJ Seal journals are considered the most reputable because they: 
 
@@ -96,7 +101,7 @@ Researcher ID
 
 ORCID: ||> Insert your ORCID number here <||
 
-Date of First Version 
+*Date of First Version* 
 
 Two months ago
 
@@ -132,24 +137,24 @@ knitr::kable(head(doaj_seal, 4), caption = 'A Table of the first 4 rows of the D
 
 ## Data being collected
 
-The doaj_seal.csv data set currently includes over 1000 reputable open access journals that we will investigate in this study. The data set will be copied and enhanced with additional columns, resulting in the processed data set, doaj_seal_enhanced.csv. The following columns will be added to doaj_seal.csv, in conformance with the Coding Framework of Castro et al (2017).
+The doaj_seal.csv data set in the `Current Year`^TM^ includes over 1000 reputable open access journals that we will investigate in this study. The data set will be copied and enhanced with additional columns, resulting in the processed data set, doaj_seal_enhanced.csv. The following columns will be added to doaj_seal.csv, in conformance with the Coding Framework of Castro et al (2017).
 
-'Data Policy'  (Boolean)
-Yes
-No
+1. 'Data Policy'  (Boolean)
+    a. Yes
+    a. No
 
-'Data Sharing Policy' (Factor)
-No mention 
-Implied
-Mentioned
-Explicitly encouraged
-Required, but not explicitly tied to editorial decisions
-Required as a condition of publication
+1. 'Data Sharing Policy' (Factor)
+    a. No mention 
+    a. Implied
+    a. Mentioned
+    a. Explicitly encouraged
+    a. Required, but not explicitly tied to editorial decisions
+    a. Required as a condition of publication
 
-'Data Citation Policy' (Factor)
-No mention 
-Implied
-Explicitly encouraged
+1. 'Data Citation Policy' (Factor)
+    a. No mention 
+    a. Implied
+    a. Explicitly encouraged
         
     
 Investigators will examine the websites of each journal listed in the doaj_seal_enhanced.csv file to determine whether the data sharing policy is included in the Instructions to Authors. The Coding Framework published by Castro et al (2017) will be applied.
