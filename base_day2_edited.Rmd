@@ -7,7 +7,21 @@ output:
     html_document:
      toc: true
      toc_float: true
-     section_numbering: true  
+     section_numbering: true
+     code_folding: hide
+     css: custom.css
+     number_sections: yes
+     toc_depth: 2
+     theme: readable
+     highlight: kate
+bibliography: 
+- oajournals.bib
+- packages.bib
+---
+<style>
+body {
+text-align: justify}
+</style>
 ---
 
 *****
@@ -17,6 +31,7 @@ output:
 # Load packages used in this exercise
 library(tidyverse)
 library(rmarkdown)
+library(DT)
 ```
 
 ```{r global_options, include=FALSE}
@@ -53,23 +68,21 @@ Do Reputable Open Access Journals Require Open Data Sharing?
 
 This study analyzes the submission requirements of the most reputable open access journals to determine the prevalence and characteristics of data sharing policies. This question is an important one for 21st century authors and readers because open data sharing is seen as a key component of open and more trusted scientific record.
 
-According to the Research Data Alliance (RDA) Data Policy Standardisation and Implementation group https://www.rd-alliance.org/groups/data-policy-standardisation-and-implementation:
+According to the [Research Data Alliance (RDA) Data Policy Standardisation and Implementation group](https://www.rd-alliance.org/groups/data-policy-standardisation-and-implementation):
 
-"the prevalence of research data policies from institutions and research funders is increasing, so publishers and editors are paying more attention to  standardisation and the wider adoption of data sharing policies."
+> the prevalence of research data policies from institutions and research funders is increasing, so publishers and editors are paying more attention to  standardisation and the wider adoption of data sharing policies.
 
 This study investigates whether the most reputable Open Access journals have data sharing polices and the characteristics of those policies. These policies require authors, in some fashion, to openly disseminate the data and software underlying their published articles.
 
-Our investigation builds on the recent work of Castro et al (2017) who assessed the prevalence and characteristics of data sharing policies from randomly-selected, English-language, open access journals. Their findings reveal that only a small minority of these journals have data sharing policies. These findings -- which are consistent with those of other studies [see for example, Vasilevsky et al, 2017 -- may be skewed because of the authors' rules of inclusion and exclusion (FN: in particular, the choice to include open access journals merely because of their use of the Open Journal Systems (OJS) hosting platform; the choice to exclude non_English language journals).
+Our investigation builds on the recent work of Castro et al [-@Castro_2017] who assessed the prevalence and characteristics of data sharing policies from randomly-selected, English-language, open access journals. Their findings reveal that only a small minority of these journals have data sharing policies. These findings -- which are consistent with those of other studies [see for example, Vasilevsky et al [-@Vasilevsky_2017] -- may be skewed because of the authors' rules of inclusion and exclusion ^[in particular, the choice to include open access journals merely because of their use of the Open Journal Systems (OJS) hosting platform; the choice to exclude non_English language journals].
 
-In this study, we will include only the most reputable open access journals in our assessment  of journal sharing policies, regardless of language. We will analyze all journals that have attained the Seal of Approval from the Directory of Open Access Journals, DOAJ http://doaj.org (shown below). We will apply the same coding framework devised by Castro et al (2017) to the DOAJ Seal journals. We contend that a more rigorously screened population of open access journals, regardless of language, will yield a more accurate and reproducible set of findings than those published from Castro et al (2017)
-
-||> Insert DOAJ Seal of Approval images/doaj_seal_logo.png <||
+In this study, we will include only the most reputable open access journals in our assessment  of journal sharing policies, regardless of language. We will analyze all journals that have attained the Seal of Approval from the Directory of Open Access Journals, [DOAJ](http://doaj.org) (shown below). We will apply the same coding framework devised by Castro et al [-@Castro_2017] to the DOAJ Seal journals. We contend that a more rigorously screened population of open access journals, regardless of language, will yield a more accurate and reproducible set of findings than those published from Castro et al[-@Castro_2017] .
 
 ![DOAJ Seal of Approval](images/doaj_seal_logo.png)
 
 DOAJ Seal journals are considered the most reputable because they: 
 
-"achieve a high level of openness, adhere to Best Practice and high publishing standards.The Seal is awarded to a journal that fulfills a set of criteria related to accessibility, openness, discoverability, reuse and author rights. It acts as a signal to readers and authors that the journal has generous use and reuse terms, author rights and adheres to the highest level of 'openness'. " (FN: DOAJ selection for Seal Approval is explained in the FAQ at https://doaj.org/faq#seal)
+> "achieve a high level of openness, adhere to Best Practice and high publishing standards.The Seal is awarded to a journal that fulfills a set of criteria related to accessibility, openness, discoverability, reuse and author rights. It acts as a signal to readers and authors that the journal has generous use and reuse terms, author rights and adheres to the highest level of 'openness'. " ^[DOAJ selection for Seal Approval is explained in the [FAQ](https://doaj.org/faq#seal)]
 
 Moreover, the DOAJ Seal journals do include over 200 non-English language journals that merit analysis in this study. Excluding these from the analysis represents cultural bias that undermines reliable research. The following plot of DOAJ Seal Journals by Country indicates the problem.
 
@@ -78,7 +91,7 @@ Moreover, the DOAJ Seal journals do include over 200 non-English language journa
 doaj <- read_csv(file = "data/DOAJ_Seal.csv")
 
 ggplot(data=doaj, aes(doaj$PubCountry, fill=doaj$PubCountry)) +
-  stat_count() +
+  stat_count() + scale_y_log10() +
   labs(x="Country", y="Count") + 
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
 ```
@@ -112,7 +125,7 @@ Related Policies
 
 All original data, code, or reports produced as part of this project are owned by Your Institution per its institutional intellectual property policy.
 
-The J. Bohannan Foundation adheres to the open access and data sharing policies of the Gates Foundation https://www.gatesfoundation.org/How-We-Work/General-Information/Open-Access-Policy
+The J. Bohannan Foundation adheres to the open access and data sharing policies of the [Gates Foundation](https://www.gatesfoundation.org/How-We-Work/General-Information/Open-Access-Policy)
 
 *****
 
@@ -120,7 +133,7 @@ Data Collection
 
 Existing Data Being Reused
 
-This study relies on the DOAJ Journal Metadata available as a csv file download from the DOAJ website https://doaj.org/faq#metadata. The csv file is updated every 30 minutes.
+This study relies on the DOAJ Journal Metadata available as a csv file download from the [DOAJ website](https://doaj.org/faq#metadata). The csv file is updated every 30 minutes.
 
 This data will be read into RStudio, using the tidyverse package (need to cite Tidyverse somehow) to filter it for those journals awarded the DOAJ Seal, and to remove unneeded columns containing the web addresses for journal policies around plagiarism, submission fees, and other urls not related to this study.
 
@@ -196,7 +209,7 @@ ggplot(data=doaj, aes(doaj$JnlLicense, fill=doaj$JnlLicense)) + stat_count() + l
 
 The journal metadata contained in the project's data sets comes directly from the Directory of Open Access Journals. 
 
-The final outputs from the project will be documented in metadata files according to the DataCite DOI registration agency -- see the DataCite Metadata Schema 4.1 https://schema.datacite.org/ for specific details. By following this standard metadata format, other researchers (and computers) will be able to find, access, and reuse the outputs from this project by searching the DataCite metadatabase.
+The final outputs from the project will be documented in metadata files according to the DataCite DOI registration agency -- see the [DataCite Metadata Schema 4.1](https://schema.datacite.org/) for specific details. By following this standard metadata format, other researchers (and computers) will be able to find, access, and reuse the outputs from this project by searching the DataCite metadatabase.
 
 *****
 
@@ -204,7 +217,7 @@ Ethics and Legal Compliance
 
 No additional ethical or privacy issues arise in this study because both the DOAJ data, and the information about data policies for any published journal, are publicly posted online.
 
-The data provided about journals awarded the Directory of Open Access Journals Seal of Approval is distributed under a CC BY-SA license. This license requires that reusers of the data share their derivative data set under the same license. Therefore, the output of this research will be disseminated under the CC BY-SA license. This license adheres to the *Principles and Guidelines of the Research Data Alliance Legal Interoperability Group*, which recommends the use of Creative Commons Attribution licenses to allow the broadest sharing of data while guaranteeing attribution to the data provider. (FN: https://www.rd-alliance.org/rda-codata-legal-interoperability-research-data-principles-and-implementation-guidelines-now
+The data provided about journals awarded the Directory of Open Access Journals Seal of Approval is distributed under a CC BY-SA license. This license requires that reusers of the data share their derivative data set under the same license. Therefore, the output of this research will be disseminated under the CC BY-SA license. This license adheres to the [*Principles and Guidelines of the Research Data Alliance Legal Interoperability Group*](https://www.rd-alliance.org/rda-codata-legal-interoperability-research-data-principles-and-implementation-guidelines-now), which recommends the use of Creative Commons Attribution licenses to allow the broadest sharing of data while guaranteeing attribution to the data provider. 
 
 
 *****
@@ -217,13 +230,13 @@ During the active phase of the project data will be stored on and backed up to t
 
 Selection and long-term preservation
 
-||> To be completed by the participants! <||
+
 
 ****
 
 Data Sharing
 
-The data and metadata will be made openly accessible under a CC-BY SA license in the CERN-maintained open access repository Zenodo https://zenodo.org/, an open dependable home for the long-tail of science, enabling researchers to share and preserve any research outputs in any size, any format and from any science. (FN: Zenodo policies are available online at http://about.zenodo.org/policies/
+The data and metadata will be made openly accessible under a CC-BY SA license in the CERN-maintained open access repository Zenodo https://zenodo.org/, an open dependable home for the long-tail of science, enabling researchers to share and preserve any research outputs in any size, any format and from any science. ^[Zenodo policies are available [online](http://about.zenodo.org/policies/))]
 
 *****
 Responsibilities and Resources
@@ -238,11 +251,7 @@ The Data Management Specialist assigned to the project as an in-kind contributio
 #### Complete dataset `doaj_seal.csv` {#annex-table}
 
 *This data table was compiled using the DT package by Xie (2018)*
-
-||>
-Turn this into a code chunk
-
-`{r data-table}
+```{r data-table, echo=FALSE}
 doaj_seal %>%
   datatable(rownames = FALSE, 
             colnames = c("Title", "Publisher", "Country", "Fees", "Waivers", "Identifiers", "Start Year", "Language(s)", "Review  Process", "Plagiarism check", "Time to Press", "License", "Author owns Copyright", "DOAJ Seal"),
@@ -251,9 +260,8 @@ doaj_seal %>%
             filter = list(position = "bottom"),
             extensions = 'Buttons', options = list(dom = 'Bfrtip',
             buttons = c('colvis', 'csv', 'pdf'))
-  )`
-
-<||
+  )
+```
 
 
 #### Principal Investigator's BioSketch
@@ -261,9 +269,6 @@ doaj_seal %>%
 This is auto-populated from your ORCID profile using the  rorcid package. (cite the package).
 
 ||> insert code from insert_orcid.R <||
-
-
-# References
 
 Castro et al, 2017, blahblahblah
 
@@ -278,3 +283,8 @@ Rorcid package citation of some kind, blahblahblah
 Xie (2018), DT Table package, CRAN, blahblahblah
 
 Xie et al (2018) Markdown book published by CRC
+
+
+# References
+
+
