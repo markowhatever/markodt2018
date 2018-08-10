@@ -35,6 +35,8 @@ bibliography:
 
 *****
 
+*****
+
 ```{r setup, include=FALSE, echo = FALSE}
 
 # Load packages used in this exercise

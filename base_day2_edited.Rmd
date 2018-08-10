@@ -14,6 +14,24 @@ output:
      toc_depth: 2
      theme: readable
      highlight: kate
+params:
+  institution:
+    choices:
+    - International Centre for Theoretical Physics
+    - Elixir Slovenia
+    - Trieste Polytechnic Institute
+    - CODATA-RDA Summer School
+    - Elsevier Inc
+    - California Institute of Technology
+    input: select
+    label: 'Institution:'
+    value: Elixir Slovenia
+  my_name:
+    choices:
+    - Marko Vidak
+    input: select
+    label: 'my_name'
+    value: Marko Vidak
 bibliography: 
 - oajournals.bib
 - packages.bib
@@ -24,6 +42,8 @@ text-align: justify}
 </style>
 ---
 
+*****
+<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 *****
 
 ```{r setup, include=FALSE, echo = FALSE}
@@ -108,7 +128,7 @@ Turn this into a code chunk
 
 ### Researcher Information
 
-YourName, Principal Investigator, YourInstitution
+`r params$my_name`, Principal Investigator, `r params$institution`
 
 Researcher ID
 
@@ -123,7 +143,7 @@ Date of Last Update
 
 Related Policies
 
-All original data, code, or reports produced as part of this project are owned by Your Institution per its institutional intellectual property policy.
+All original data, code, or reports produced as part of this project are owned by Your `r params$institution` per its institutional intellectual property policy.
 
 The J. Bohannan Foundation adheres to the open access and data sharing policies of the [Gates Foundation](https://www.gatesfoundation.org/How-We-Work/General-Information/Open-Access-Policy)
 
@@ -224,7 +244,7 @@ The data provided about journals awarded the Directory of Open Access Journals S
 
 Storage and Backup
 
-During the active phase of the project data will be stored on and backed up to the Research Data Storage Facility (RDSF) at My Institution. This facility represents 2 million pounds of digital resilient storage, with ongoing capital investment. The RDSF is overseen by a steering group of senior research and support staff, which includes the PVC Research. Backup procedures are robust (overnight backup, copies held remotely on tape) and secured access is in place
+During the active phase of the project data will be stored on and backed up to the Research Data Storage Facility (RDSF) at `r params$institution`. This facility represents 2 million pounds of digital resilient storage, with ongoing capital investment. The RDSF is overseen by a steering group of senior research and support staff, which includes the PVC Research. Backup procedures are robust (overnight backup, copies held remotely on tape) and secured access is in place
 
 *****
 
@@ -243,7 +263,7 @@ Responsibilities and Resources
 
 The Principal Investigator is responsible for implementing the Data Management Plan and ensuring it is reviewed and revised as necessary. (S)he will be responsible for all data collection and recording; for data analysis and visualization; and for maintain all files under version control using git and GitHub.
 
-The Data Management Specialist assigned to the project as an in-kind contribution from the My Institution Library will be responsible for creating the DataCite metadata documentation for all outputs and ensuring timely DOI registration of each final output. (S)he will also deposit all final outputs to the Zenodo repository and update metadata associated with the DOI as necessary.
+The Data Management Specialist assigned to the project as an in-kind contribution from the `r params$institution` Library will be responsible for creating the DataCite metadata documentation for all outputs and ensuring timely DOI registration of each final output. (S)he will also deposit all final outputs to the Zenodo repository and update metadata associated with the DOI as necessary.
 
 
 # Annexes {-}
@@ -267,6 +287,17 @@ doaj_seal %>%
 #### Principal Investigator's BioSketch
 
 This is auto-populated from your ORCID profile using the  rorcid package. (cite the package).
+
+```{r orcid-bio, echo= FALSE}
+library ('rorcid')
+library('httpuv')
+
+token <- orcid_auth(scope = "/authenticate", reauth = TRUE, redirect_uri = getOption("rorcid.redirect_uri"))
+
+res <- orcid_bio(orcid = "0000-0001-7901-3936")
+bio <- res$'0000-0001-7901-3936'$'content'
+
+```
 
 ||> insert code from insert_orcid.R <||
 
